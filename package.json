@@ -1,0 +1,24 @@
+{
+  "name": "vue-detail",
+  "version": "1.0.0",
+  "description": "Implementation of vue",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lyc2014/vue-detail.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lyc2014/vue-detail/issues"
+  },
+  "homepage": "https://github.com/lyc2014/vue-detail#readme",
+  "devDependencies": {
+    "rollup": "^3.29.4"
+  }
+}
