@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app1"></div>
+    <div>
+        <button id="button1">case1</button> &nbsp;
+        <label>old: text ✔  children ×; new: text ✔ children ×</label>
+    </div>
+    <div id="app2"></div>
+    <div>
+        <button id="button2">case2</button> &nbsp;
+        <label>old: text × children ✔; new: text ✔ children ×</label>
+    </div>
+    <div id="app3"></div>
+    <div>
+        <button id="button3">case3</button> &nbsp;
+        <label>old: text ✔ children x; new: text x children ✔</label>
+    </div>
+    <div id="app4"></div>
+    <div>
+        <button id="button4">case4</button> &nbsp;
+        <label>old: children ✔; new: children ✔;  oldStartVnode === newStartVnode</label>
+    </div>
+    <div id="app5"></div>
+    <div>
+        <button id="button5">case5</button> &nbsp;
+        <label>old: children ✔; new: children ✔; oldEndVnode == newEndVnode</label>
+    </div>
+    <div id="app6"></div>
+    <div>
+        <button id="button6">case6</button> &nbsp;
+        <label>old: children ✔; new: children ✔; oldStartVnode == newEndVnode</label>
+    </div>
+    <div id="app7"></div>
+    <div>
+        <button id="button7">case7</button> &nbsp;
+        <label>old: children ✔; new: children ✔; oldEndVnode == newStartVnode</label>
+    </div>
+    <div id="app8"></div>
+    <div>
+        <button id="button8">case8</button> &nbsp;
+        <label>old: children ✔; new: children ✔; key compare</label>
+    </div>
+    <div id="app9"></div>
+    <div>
+        <button id="button9">case9</button> &nbsp;
+        <label>old: children ✔; new: children ✔; key compare  add some</label>
+    </div>
+    <div id="app10"></div>
+    <div>
+        <button id="button10">case10</button> &nbsp;
+        <label>old: children ✔; new: children ✔; key compare  delete some</label>
+    </div>
+</body>
+<script type="module">
+    import snabbdom from './index.js'
+    const { h, patch } = snabbdom
+
+    function getDom(id) {
+        return document.getElementById(id)
+    }
+
+    // case1
+    const app1 = getDom('app1')
+    const button1 = getDom('button1')
+    const vnode11 = h('div', {}, 'this is old vnode11')
+    const vnode12 = h('div', {}, 'this is new vnode12')
+    patch(app1, vnode11)
+    button1.addEventListener('click',() => {
+        patch(vnode11, vnode12)
+    })
+
+
+    // case2
+    const vnode21 = h('div', {}, [
+        h('p', {}, 'this is p1'),
+        h('p', {}, 'this is p2'),
+        h('p', {}, 'this is p3')
+    ])
+    const vnode22 = h('div', {}, 'this is new vnode22')
+    const app2 = getDom('app2')
+    const button2 = getDom('button2')
+    patch(app2, vnode21)
+    button2.addEventListener('click',() => {
+        patch(vnode21, vnode22)
+    })
+
+    // case3
+    const vnode31 = h('div', {}, 'this is vnode31')
+    const vnode32 = h('div', {}, [
+        h('ul', {}, [
+            h('li', {}, 'A'),
+            h('li', {}, 'B'),
+            h('li', {}, 'C'),
+            h('li', {}, 'D')
+        ])
+    ])
+    const app3 = getDom('app3')
+    const button3 = getDom('button3')
+    patch(app3, vnode31)
+    button3.addEventListener('click',() => {
+        patch(vnode31, vnode32)
+    })
+
+    // case4
+    const vnode41 = h('div', {}, [
+        h('h1', {}, [
+            h('span', {}, 'this is h1')
+        ]),
+        h('h2', {}, 'this is h2'),
+        h('h3', {}, 'this is h3')
+    ])
+    const vnode42 = h('div', {}, [
+        h('h1', {}, [
+            h('span', {}, 'this is new h1')
+        ]),
+        h('h2', {}, 'this is h2'),
+        h('h3', {}, 'this is h3'),
+        h('p', {}, 'this is p')
+    ])
+    const app4 = getDom('app4')
+    const button4 = getDom('button4')
+    patch(app4, vnode41)
+    button4.addEventListener('click',() => {
+        patch(vnode41, vnode42)
+    })
+
+    // case 5
+    const app5 = getDom('app5')
+    const vnode51 = h('div', {}, [
+        h('h1', {}, 'this is h1'),
+        h('h2', {}, 'this is h2'),
+        h('h3', {}, 'this is h3'),
+        h('p', {}, 'this is p')
+    ])
+    const vnode52 = h('div', {}, [
+        h('h2', {}, 'this is h2'),
+        h('h3', {}, 'this is h3'),
+        h('p', {}, 'this is p')
+    ])
+    const button5 = getDom('button5')
+    patch(app5, vnode51)
+    button5.addEventListener('click',() => {
+        patch(vnode51, vnode52)
+    })
+
+    // case 6
+    const vnode61 = h('div', {}, [
+        h('h1', {}, 'this is h1'),
+        h('h2', {}, 'this is h2'),
+        h('h3', {}, 'this is h3'),
+        h('p', {}, 'this is p')
+    ])
+
+    const vnode62 = h('div', {}, [
+        h('span', {}, 'this is span'),
+        h('p', {}, 'this is p'),
+        h('h3', {}, 'this is h3'),
+        h('h2', {}, 'this is h2'),
+        h('h1', {}, 'this is h1')
+    ])
+    const app6 = getDom('app6')
+    const button6 = getDom('button6')
+    patch(app6, vnode61)
+    button6.addEventListener('click',() => {
+        patch(vnode61, vnode62)
+    })
+
+
+    // case 7
+    const vnode71 = h('div', {}, [
+        h('h1', {}, 'this is h1'),
+        h('h2', {}, 'this is h2'),
+        h('h3', {}, 'this is h3'),
+        h('p', {}, 'this is p')
+    ])
+
+    const vnode72 = h('div', {}, [
+        h('p', {}, 'this is p'),
+        h('h3', {}, 'this is h3'),
+        h('h2', {}, 'this is h2'),
+        h('h1', {}, 'this is h1'),
+        h('span', {}, 'this is span'),
+    ])
+    const app7 = getDom('app7')
+    const button7 = getDom('button7')
+    patch(app7, vnode71)
+    button7.addEventListener('click',() => {
+        patch(vnode71, vnode72)
+    })
+
+    // case 8
+    const vnode81 = h('ul', {}, [
+        h('li', {key: 'key6'}, 'this is key6'),
+        h('li', {key: 'key2'}, 'this is key2'),
+        h('li', {key: 'key4'}, 'this is key4'),
+        h('li', {key: 'key1'}, 'this is key1'),
+        h('li', {key: 'key5'}, 'this is key5'),
+        h('li', {key: 'key3'}, 'this is key3')
+    ])
+    const vnode82 = h('ul', {}, [
+        h('li', {key: 'key1'}, 'this is key1'),
+        h('li', {key: 'key2'}, 'this is key2'),
+        h('li', {key: 'key3'}, 'this is key3'),
+        h('li', {key: 'key4'}, 'this is key4'),
+        h('li', {key: 'key5'}, 'this is key5'),
+        h('li', {key: 'key6'}, 'this is key6')
+    ])
+    const app8 = getDom('app8')
+    const button8 = getDom('button8')
+    patch(app8, vnode81)
+    button8.addEventListener('click',() => {
+        patch(vnode81, vnode82)
+    })
+
+    const vnode91 = h('ul', {}, [
+        h('li', {key: 'key6'}, 'this is key6'),
+        h('li', {key: 'key2'}, 'this is key2'),
+        h('li', {key: 'key4'}, 'this is key4'),
+        h('li', {key: 'key1'}, 'this is key1'),
+        h('li', {key: 'key5'}, 'this is key5'),
+        h('li', {key: 'key3'}, 'this is key3')
+    ])
+    const vnode92 = h('ul', {}, [
+        h('li', {key: 'key7'}, 'this is key7'),
+        h('li', {key: 'key8'}, 'this is key8'),
+        h('li', {key: 'key1'}, 'this is key1'),
+        h('li', {key: 'key2'}, 'this is key2'),
+        h('li', {key: 'key3'}, 'this is key3'),
+        h('li', {key: 'key4'}, 'this is key4'),
+        h('li', {key: 'key5'}, 'this is key5'),
+        h('li', {key: 'key6'}, 'this is key6')
+    ])
+    const app9 = getDom('app9')
+    const button9 = getDom('button9')
+    patch(app9, vnode91)
+    button9.addEventListener('click',() => {
+        patch(vnode91, vnode92)
+    })
+
+    const vnode101 = h('ul', {}, [
+        h('li', {key: 'key6'}, 'this is key6'),
+        h('li', {key: 'key2'}, 'this is key2'),
+        h('li', {key: 'key4'}, 'this is key4'),
+        h('li', {key: 'key1'}, 'this is key1'),
+        h('li', {key: 'key5'}, 'this is key5'),
+        h('li', {key: 'key3'}, 'this is key3')
+    ])
+    const vnode102 = h('ul', {}, [
+        h('li', {key: 'key1'}, 'this is key1'),
+        h('li', {key: 'key2'}, 'this is key2'),
+        h('li', {key: 'key3'}, 'this is key3'),
+        h('li', {key: 'key4'}, 'this is key4'),
+    ])
+    const app10 = getDom('app10')
+    const button10 = getDom('button10')
+    patch(app10, vnode101)
+    button10.addEventListener('click',() => {
+        patch(vnode101, vnode102)
+    })
+    
+</script>
+</html>
