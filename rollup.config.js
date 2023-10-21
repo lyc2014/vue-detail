@@ -1,7 +1,10 @@
+import typescript from '@rollup/plugin-typescript'
 export default {
-    input: 'src/index.js',
+    input: 'src/index.ts',
     output: {
         file: 'dist/vue.development.js',
-        format: 'cjs'
-    }
+        format: 'umd',
+        name: 'Vue'
+    },
+    plugins: [typescript()]
 }
