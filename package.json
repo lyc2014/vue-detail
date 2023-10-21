@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/lyc2014/vue-detail#readme",
   "devDependencies": {
+    "@rollup/plugin-typescript": "^11.1.5",
     "rollup": "^3.29.4"
   }
 }
