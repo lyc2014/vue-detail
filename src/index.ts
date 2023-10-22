@@ -1,6 +1,9 @@
 import { initMixin } from "./core/instance/init"
 export type Vue_OPTIONS = {
-    data: () => {}
+    data: () => {},
+    watch?: {
+        [key: string]: () => {}
+    }
 }
 function Vue (options:Vue_OPTIONS) {
     this._init(options)
