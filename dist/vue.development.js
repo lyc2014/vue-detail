@@ -4,6 +4,35 @@
     (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.Vue = factory());
 })(this, (function () { 'use strict';
 
+    var queue = [];
+    var waiting = false;
+    var has = {};
+    function queueWatcher(watcher) {
+        var id = watcher.id;
+        if (has[id] !== true) {
+            has[id] = true;
+            queue.push(watcher);
+            if (!waiting) {
+                waiting = true;
+                // promise微任务时  执行flushSchedulerQueue的内容
+                nextTick(flushSchedulerQueue);
+            }
+        }
+    }
+    function nextTick(cb) {
+        Promise.resolve().then(function () { cb(); });
+    }
+    function flushSchedulerQueue() {
+        // id从小到大顺序排序
+        queue.sort(function (a, b) { return a.id - b.id; });
+        for (var i = 0; i < queue.length; i++) {
+            var watcher = queue[i];
+            watcher.run();
+            queue.length = 0;
+            waiting = false;
+        }
+    }
+
     var uid$1 = 0;
     var Dep = /** @class */ (function () {
         function Dep() {
@@ -66,7 +95,7 @@
             }
         };
         Watcher.prototype.update = function () {
-            this.run();
+            queueWatcher(this);
         };
         Watcher.prototype.run = function () {
             var value = this.get(); // 这里不会重复添加addSub this.depIds负责拦截

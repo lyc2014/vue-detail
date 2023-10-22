@@ -13,3 +13,7 @@ Implementation of vue
 2. initWatcher
    前面已经初始化了数据监听的功能了，后续根据options.watch属性 new Watcher
    new Watcher的流程 会把new出来的实例watcher对象赋值给Dep.target, 然后读取watch的属性(此属性已被监听)，进而这个watcher对象会被推到这个监听属性对应的闭包对象dep的subs数组里面。
+
+3 添加schaduler功能
+  将watcher的update逻辑推入到一个任务队列里面，该任务队列会在微任务里面执行
+  即宏任务执行完之后才会执行watcher的逻辑  在执行任务队列之前  还可以对watcher任务进行一些二次处理 比如排序之类的。

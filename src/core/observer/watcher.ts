@@ -1,3 +1,4 @@
+import { queueWatcher } from '../scheduler';
 import Dep from './dep'
 let uid = 0
 export default class Watcher {
@@ -34,7 +35,7 @@ export default class Watcher {
         }
     }
     update () {
-        this.run()
+        queueWatcher(this)
     }
     run () {
         const value = this.get() // 这里不会重复添加addSub this.depIds负责拦截
