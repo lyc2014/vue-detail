@@ -10,6 +10,7 @@ export function initMixin(Vue) {
     }
 }
 function initWatch (vm, watch) {
+    if (!watch) return
     let keys = Object.keys(watch)
     for(let i = 0; i < keys.length; i++) {
         let exp = keys[i]

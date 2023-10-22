@@ -7,34 +7,50 @@
     <script src="./vue.development.js"></script>
 </head>
 <body>
-    
+    <div id="app"></div>
+    <br/><br/>
+    <br/><br/>
+    <br/><br/>
+    <div>
+        <label for="">change name</label>
+        <input type="text" id="name"><br/>
+        <label>change age</label>
+        <input type="text" id="age">
+    </div>
+    <div>
+        <button onclick="clickMe()">click me!</button>
+    </div>
 </body>
 <script>
     const vm = new Vue({
-        data () {
-            return {
-                a: 1,
-                b: {
-                    c: 3
-                }
+        render (h) {
+            with(this){
+                return h('div', {}, [
+                    h('p', {}, `My name is ${name}`),
+                    h('p', {}, `My age is ${age}`)
+                ])
             }
         },
-        watch: {
-            'a': function (newValue, oldValue) {
-                console.log('new value of a:', newValue)
-                console.log('old value of a:', oldValue)
-            },
-            'b.c': function (newValue, oldValue) {
-                console.log('new value of b.c', newValue)
-                console.log('old value of b.c', oldValue)
+        data () {
+            return {
+                name: 'YuanCheng Li',
+                age: '18'
             }
         }
     })
-    setTimeout(() => {
-        vm.a = 2
-        console.log('vm.a changed')
-        vm.b.c = 4
-        console.log('vm.b.c changed')
-    }, 1000)
+    vm.$mount(document.getElementById('app'))
+
+    const nameDom = document.getElementById('name')
+    const ageDom = document.getElementById('age')
+    function clickMe () {
+        let name = nameDom.value
+        let age = ageDom.value
+        if (name) {
+            vm.name = name
+        }
+        if (age) {
+            vm.age = age
+        }
+    }
 </script>
 </html>

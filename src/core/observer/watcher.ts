@@ -8,12 +8,21 @@ export default class Watcher {
     value;
     depIds;
     cb;
-    constructor(vm, expOrFn, cb) {
+    constructor(vm, expOrFn, cb, isRenderWatcher?: boolean) {
         this.vm = vm
         this.id = uid++
         this.depIds = new Set()
         this.cb = cb
-        this.getter = parsePath(expOrFn)
+
+        if (isRenderWatcher) {
+            vm._watcher = this
+        }
+
+        if (typeof expOrFn === 'function') {
+            this.getter = expOrFn
+        } else {
+            this.getter = parsePath(expOrFn)
+        }
         this.value = this.get()
     }
     get () {
